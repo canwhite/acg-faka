@@ -47,6 +47,7 @@ class Install extends User
         $data['ext']['curl'] = extension_loaded("curl");
         $data['ext']['pdo'] = extension_loaded("PDO");
         $data['ext']['pdo_mysql'] = extension_loaded("pdo_mysql");
+        $data['ext']['pdo_sqlite'] = extension_loaded("pdo_sqlite");
         $data['ext']['date'] = extension_loaded("date");
         $data['ext']['json'] = extension_loaded("json");
         $data['ext']['session'] = extension_loaded("session");
