@@ -38,7 +38,7 @@ CREATE TABLE `acg_bill`  (
                                    `currency` INTEGER NOT NULL DEFAULT 0,
                                    `log` TEXT NOT NULL,
                                    `create_time` DATETIME NOT NULL,
-                                   FOREIGN KEY (`owner`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+                                   FOREIGN KEY (`owner`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE
 );
 
 -- 创建索引
@@ -93,7 +93,7 @@ CREATE TABLE `acg_card`  (
                                    `race` TEXT,
                                    `sku` JSON,
                                    `draft_premium` NUMERIC(10,2) DEFAULT NULL,
-                                   FOREIGN KEY (`commodity_id`) REFERENCES `acg_commodity` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+                                   FOREIGN KEY (`commodity_id`) REFERENCES `acg_commodity` (`id`) ON DELETE CASCADE
 );
 
 CREATE INDEX `card_owner` ON `acg_card`(`owner`);
@@ -115,7 +115,7 @@ CREATE TABLE `acg_cash`  (
                                    `cost` NUMERIC(10, 2) NOT NULL DEFAULT 0.00,
                                    `status` INTEGER NOT NULL,
                                    `message` TEXT,
-                                   FOREIGN KEY (`user_id`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+                                   FOREIGN KEY (`user_id`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE
 );
 
 CREATE INDEX `cash_user_id` ON `acg_cash`(`user_id`);
@@ -355,7 +355,7 @@ CREATE TABLE `acg_order_option`  (
                                            `id` INTEGER PRIMARY KEY AUTOINCREMENT,
                                            `order_id` INTEGER NOT NULL UNIQUE,
                                            `option` TEXT,
-                                           FOREIGN KEY (`order_id`) REFERENCES `acg_order` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+                                           FOREIGN KEY (`order_id`) REFERENCES `acg_order` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `acg_pay`  (
@@ -432,8 +432,8 @@ CREATE TABLE `acg_user_category`  (
                                             `name` TEXT,
                                             `status` INTEGER NOT NULL DEFAULT 0,
                                             UNIQUE (`user_id`, `category_id`),
-                                            FOREIGN KEY (`user_id`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-                                            FOREIGN KEY (`category_id`) REFERENCES `acg_category` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+                                            FOREIGN KEY (`user_id`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE,
+                                            FOREIGN KEY (`category_id`) REFERENCES `acg_category` (`id`) ON DELETE CASCADE
 );
 
 CREATE INDEX `user_category_status` ON `acg_user_category`(`status`);
@@ -448,8 +448,8 @@ CREATE TABLE `acg_user_commodity`  (
                                              `name` TEXT,
                                              `status` INTEGER NOT NULL DEFAULT 0,
                                              UNIQUE (`user_id`, `commodity_id`),
-                                             FOREIGN KEY (`user_id`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
-                                             FOREIGN KEY (`commodity_id`) REFERENCES `acg_commodity` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+                                             FOREIGN KEY (`user_id`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE,
+                                             FOREIGN KEY (`commodity_id`) REFERENCES `acg_commodity` (`id`) ON DELETE CASCADE
 );
 
 CREATE INDEX `user_commodity_commodity_id` ON `acg_user_commodity`(`commodity_id`);
@@ -485,7 +485,7 @@ CREATE TABLE `acg_user_recharge`  (
                                             `pay_url` TEXT,
                                             `pay_time` DATETIME,
                                             `option` TEXT,
-                                            FOREIGN KEY (`user_id`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
+                                            FOREIGN KEY (`user_id`) REFERENCES `acg_user` (`id`) ON DELETE CASCADE
 );
 
 CREATE INDEX `user_recharge_user_id` ON `acg_user_recharge`(`user_id`);

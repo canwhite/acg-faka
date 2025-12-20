@@ -5,7 +5,6 @@ namespace App\Util;
 
 
 use Kernel\Exception\JSONException;
-use Rah\Danpu\Exception;
 
 class Zip
 {

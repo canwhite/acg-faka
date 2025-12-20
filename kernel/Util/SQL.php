@@ -73,8 +73,11 @@ class SQL
             $pdo = new PDO('sqlite:' . $dbPath);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // 启用外键约束
+            // 启用外键约束和性能优化
             $pdo->exec("PRAGMA foreign_keys = ON");
+            $pdo->exec("PRAGMA journal_mode = WAL");
+            $pdo->exec("PRAGMA cache_size = 10000");
+            $pdo->exec("PRAGMA synchronous = NORMAL");
 
             // 分割SQL语句并执行
             $statements = self::splitSqlStatements($sqlSrc);
