@@ -276,13 +276,16 @@
                 <div class="#{if $install} button #{else} disabled #{/if}">#{if $install} 下一步 #{else} 👿 请检查环境 #{/if}
                 </div>
             </fieldset>
+            <!-- SQLite数据库已配置，跳过此步骤 -->
             <fieldset class="section">
-                <h3 style="color: pink;font-weight: bold;">配置您的数据库信息</h3>
-                <input type="text" name="host" placeholder="数据库地址" , value="127.0.0.1">
-                <input type="text" name="database" placeholder="数据库名称">
-                <input type="text" name="username" placeholder="数据库账号">
-                <input type="text" name="password" placeholder="数据库密码">
-                <input type="text" name="prefix" placeholder="数据库前缀" value="acg_">
+                <h3 style="color: pink;font-weight: bold;">数据库配置</h3>
+                <div style="padding: 20px; background: #e8f5e8; border-radius: 5px; margin-bottom: 20px;">
+                    <p style="margin: 0; color: #2e7d2e;">
+                        ✅ SQLite数据库已配置完成，无需额外设置<br>
+                        📁 数据库位置: /database/database.sqlite<br>
+                        🔧 数据库类型: SQLite (WAL模式)
+                    </p>
+                </div>
                 <div class="button">下一步</div>
             </fieldset>
             <fieldset class="section">
@@ -339,19 +342,7 @@
             }
 
             if (currentSectionIndex == 1) {
-                //验证主机
-                if (database == '') {
-                    layer.msg("请填写数据库名称");
-                    return;
-                }
-                if (username == '') {
-                    layer.msg("请填写数据库账号");
-                    return;
-                }
-                if (password == '') {
-                    layer.msg("请填写数据库密码");
-                    return;
-                }
+                // SQLite数据库已配置，直接跳过验证
                 currentSection.removeClass("is-active").next().addClass("is-active");
                 headerSection.removeClass("is-active").next().addClass("is-active");
             }

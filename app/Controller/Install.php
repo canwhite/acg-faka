@@ -84,8 +84,6 @@ class Install extends User
             $map[$k] = trim((string)$v);
         }
 
-        $host = $map['host'] == '' ? 'localhost' : $map['host'];
-
         $email = $map['email'];
         $nickname = $map['nickname'];
         $login_password = $map['login_password'];
@@ -98,38 +96,37 @@ class Install extends User
             throw new JSONException("您设置的登录密码过于简单");
         }
 
-        $sqlFile = BASE_PATH . '/kernel/Install/Install.sql';
-
+        //SQLite数据库已存在，只需要创建管理员账号
         $salt = Str::generateRandStr(32);
         $pw = Str::generatePassword($login_password, $salt);
 
-        $sqlSrc = (string)file_get_contents($sqlFile);
-        $sqlSrc = str_replace('__MANAGE_EMAIL__', $email, $sqlSrc);
-        $sqlSrc = str_replace('__MANAGE_PASSWORD__', $pw, $sqlSrc);
-        $sqlSrc = str_replace('__MANAGE_SALT__', $salt, $sqlSrc);
-        $sqlSrc = str_replace('__MANAGE_NICKNAME__', $nickname, $sqlSrc);
-
-        if (file_put_contents($sqlFile . ".tmp", $sqlSrc) === false) {
-            throw new JSONException("没有写入权限，请检查权限是否足够");
+        // 使用Eloquent直接创建管理员账号
+        try {
+            // 检查是否已存在管理员
+            $manage = \App\Model\Manage::where('email', $email)->first();
+            if (!$manage) {
+                // 创建新管理员
+                \App\Model\Manage::create([
+                    'email' => $email,
+                    'password' => $pw,
+                    'nickname' => $nickname,
+                    'salt' => $salt,
+                    'avatar' => '/favicon.ico',
+                    'status' => 1,
+                    'type' => 1,
+                    'create_time' => date('Y-m-d H:i:s')
+                ]);
+            } else {
+                // 更新现有管理员密码
+                $manage->password = $pw;
+                $manage->nickname = $nickname;
+                $manage->salt = $salt;
+                $manage->status = 1;
+                $manage->save();
+            }
+        } catch (\Exception $e) {
+            throw new JSONException("创建管理员账号失败: " . $e->getMessage());
         }
-
-        //导入数据库
-        SQL::import($sqlFile . ".tmp", $host, $map['database'], $map['username'], $map['password'], $map['prefix']);
-        //设置数据库账号密码
-        setConfig([
-            'driver' => 'mysql',
-            'host' => $host,
-            'database' => $map['database'],
-            'username' => $map['username'],
-            'password' => $map['password'],
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => $map['prefix']
-        ], BASE_PATH . "/config/database.php");
-
-        Opcache::invalidate(BASE_PATH . "/config/database.php");
-
-        unlink($sqlFile . ".tmp");
         file_put_contents(BASE_PATH . '/kernel/Install/Lock', "");
 
         try {

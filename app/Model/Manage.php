@@ -37,5 +37,25 @@ class Manage extends Model
     /**
      * @var array
      */
+    protected $fillable = [
+        'email',
+        'password',
+        'security_password',
+        'nickname',
+        'salt',
+        'avatar',
+        'status',
+        'type',
+        'create_time',
+        'login_time',
+        'last_login_time',
+        'login_ip',
+        'last_login_ip',
+        'note'
+    ];
+
+    /**
+     * @var array
+     */
     protected $casts = ['id' => 'integer', 'type' => 'integer', 'status' => 'integer'];
 }
