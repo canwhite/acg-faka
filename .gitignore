@@ -1,0 +1,56 @@
+# Runtime directories
+runtime/
+
+# Cache directories
+cache/
+*/cache/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.pid
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Composer
+/vendor/composer.lock.backup
+
+# Backup files
+*.backup
+*.bak
+
+# Sensitive files
+.env
+.env.local
+.env.production
+
+# Logs
+logs/
+*.log
+
+# Upload directories
+uploads/
+upload/
+
+# Session files
+sessions/
+
+# Certificate files
+*.pem
+*.key
+*.crt
